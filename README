@@ -1,1 +1,3 @@
-Probando...
+* ZabbixAgent1.8.2.sh: 
+	- Install zabbix-agent 1.8.2 for you.
+	- Created on Debian Lenny
