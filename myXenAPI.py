@@ -5,6 +5,13 @@
 # lucho -The black hawk- <luislopez72@gmail.com>
 #
 
+#.................................................................................................
+# Notes for me:
+#		* Considerar el uso de un archivo como cache para reducir pedidos al server.
+#		* Si se implementa la anterior, considerar una variable booleana para cachear o no.
+#.................................................................................................
+
+
 import xmlrpclib
 
 #
@@ -36,10 +43,13 @@ def getall_vms(xen_server, session):
 	check_response(response = allvms)
 	return allvms['Value']
 
-def getall_vms_records(xen_server, session):
-	allvms_records = xen_server.VM.get_all_records(session)
-	check_response(response = allvms_records)
-	return allvms_records['Value']
+##########
+## Not used yet
+#
+#def getall_vms_records(xen_server, session):
+#	allvms_records = xen_server.VM.get_all_records(session)
+#	check_response(response = allvms_records)
+#	return allvms_records['Value']
 
 def get_vm_records(xen_server, session, vm):
 	records = xen_server.VM.get_record(session, vm)
@@ -56,6 +66,16 @@ def countvbds_allvms(xen_server, session, state=None):
 		else:
 			print "VM name: {name} \tNumber of vbds: {vbds}".format(name = fields['name_label'], vbds = len(fields['VBDs']))
 
+def getvm_pername(xen_server, session, vmname):
+	OpaqueRef = None
+	for vm in  getall_vms(xen_server = xen_server,session = session):
+		fields = get_vm_records(xen_server = xen_server,session = session, vm = vm)
+		if fields['name_label'] == vmname:
+			OpaqueRef = vm
+	return OpaqueRef
+
+
+
 #
 # Main code
 #
@@ -64,16 +84,19 @@ protocol = "https"
 server   = "A.B.C.D"
 port     = "443"
 user     = "root"
-password = "myscretpassword"
+password = "mysecretpassword"
 url      = protocol + "://" + server + ":" + port
 xen      = xmlrpclib.Server(url)
+
 
 #
 # Call your functions here
 #
+
 session  = login(xen_server = xen, user = user, password = password)
-#get_vm_records(xen_server = xen, session = session, vm = "OpaqueRef:4e32eb31-a733-d8d4-48bc-b7acb77f0e83")
-countvbds_allvms(xen_server = xen, session = session, state = "Running")
+#countvbds_allvms(xen_server = xen, session = session, state = "Running")
+print getvm_pername(xen_server = xen, session = session, vmname = "myvmname")
+
 
 ## Close your session
 logout(session = session)
