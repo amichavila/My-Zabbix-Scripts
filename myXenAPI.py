@@ -108,7 +108,7 @@ xen      = xmlrpclib.Server(url)
 #
 
 session  = login(xen_server = xen, user = user, password = password)
-vmOpaqueRef = getvm_pername(xen_server = xen, session = session, vmname = "abc0gw")
+vmOpaqueRef = getvm_pername(xen_server = xen, session = session, vmname = "myvmname")
 print vmOpaqueRef
 print count_vm_vbds(xen_server = xen, session = session, vm = vmOpaqueRef)
 
