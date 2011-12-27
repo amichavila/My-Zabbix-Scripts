@@ -1,6 +1,10 @@
-* ZabbixAgent1.8.2.sh: 
-	- Install zabbix-agent 1.8.2 for you.
-	- Created on Debian Lenny
-* lucho_zbxapi.py
-	- This is the first version of this API. Please do not use it yet..
-	- This is my zabbix API for python programmers.
+Please report bugs <luislopez72@gmail.com>
+
+Folder: xen
+Description: There is a collection of scripts that will help zabbix-xen users.
+
+Folder: zabbix
+Description: There is a collection of script that will help zabbix users.
+
+Folder: others
+Description: There is a collection of little tools.

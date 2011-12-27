@@ -1,0 +1,11 @@
+#
+# This is so important!!
+# You must apply this change in the following file.
+#
+
+/usr/share/zabbix/api/classes/class.citem.php
+
+if(isset($options['filter']['key_']))
+      # $sql_parts['where']['key_'] = 'i.key_='.zbx_dbstr($options['filter']['key_']);
+      $sql_parts['where']['key_'] = 'i.key_ like '.zbx_dbstr($options['filter']['key_']);
+
