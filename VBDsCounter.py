@@ -1,5 +1,11 @@
 #!/usr/bin/env python
 
+#*****************************
+# Please don't use it yet. 
+# I'm so tired an this code is
+# so dirty...
+#*****************************
+
 #
 # This python program count all VBDs for a specific vm.
 # I have modified my XenAPI to do it...
