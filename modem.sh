@@ -49,7 +49,7 @@ else
   fi
 fi
 
-# Kill all modem-manager
+# Kill all process modem-manager
 killall modem-manager
 
 echo "--- Finished ---"
