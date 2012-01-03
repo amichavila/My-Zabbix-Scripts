@@ -51,6 +51,25 @@ function get_overall_sent()
    unset $match
 }
 
+# Get the scribe counter for 'scribe_overall:denied for queue size:'
+# Print -1 if it not exist.
+function get_overall_denied_for_queue_size()
+{
+   match=`scribe_ctrl counters $SCRIBEPORT | grep -w ^scribe_overall:denied\ for\ queue\ size:`
+   [[ $match ]] && echo $match | awk '{print $2}' || echo -1
+   unset $match
+}
+
+# Get the scribe counter for 'scribe_overall:denied for rate:'
+# Print -1 if it not exist.
+function get_overall_denied_for_rate()
+{
+   match=`scribe_ctrl counters $SCRIBEPORT | grep -w ^scribe_overall:denied\ for\ rate:`
+   [[ $match ]] && echo $match | awk '{print $2}' || echo -1
+   unset $match
+}
+
+
 # Get the scribe counter for 'scribe_overall:retries:'
 # Print -1 if it not exist.
 function get_overall_retries()
@@ -59,4 +78,32 @@ function get_overall_retries()
    [[ $match ]] && echo $match | awk '{print $2}' || echo -1
    unset $match
 }
+
+# Get the scribe counter for 'scribe_overall:requeue:'
+# Print -1 if it not exist.
+function get_overall_requeue()
+{
+   match=`scribe_ctrl counters $SCRIBEPORT | grep -w ^scribe_overall:requeue:`
+   [[ $match ]] && echo $match | awk '{print $2}' || echo -1
+   unset $match
+}
+
+# Get the scribe counter for 'scribe_overall:lost:'
+# Print -1 if it not exist.
+function get_overall_lost()
+{
+   match=`scribe_ctrl counters $SCRIBEPORT | grep -w ^scribe_overall:lost:`
+   [[ $match ]] && echo $match | awk '{print $2}' || echo -1
+   unset $match
+}
+
+# Get the scribe counter for 'scribe_overall:received blank category:'
+# Print -1 if it not exist.
+function get_overall_blank_category()
+{
+   match=`scribe_ctrl counters $SCRIBEPORT | grep -w ^scribe_overall:received\ blank\ category:`
+   [[ $match ]] && echo $match | awk '{print $2}' || echo -1
+   unset $match
+}
+
 
