@@ -43,6 +43,7 @@ else
     echo " [OK]"
   else
     echo " [FAIL]"
+    echo "     >> Can not load module 'usbserial' <<"
     echo "--- Finished ---"
     exit 1
   fi
