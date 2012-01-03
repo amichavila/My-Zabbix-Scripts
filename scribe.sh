@@ -44,7 +44,7 @@ function get_overall_bad()
 
 # Get the scribe counter for 'scribe_overall:sent:'
 # Print -1 if it not exist.
-function get_overall_bad()
+function get_overall_sent()
 {
    match=`scribe_ctrl counters $SCRIBEPORT | grep -w ^scribe_overall:sent:`
    [[ $match ]] && echo $match | awk '{print $2}' || echo -1
