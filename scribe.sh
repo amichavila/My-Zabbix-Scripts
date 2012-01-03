@@ -51,3 +51,12 @@ function get_overall_sent()
    unset $match
 }
 
+# Get the scribe counter for 'scribe_overall:retries:'
+# Print -1 if it not exist.
+function get_overall_retries()
+{
+   match=`scribe_ctrl counters $SCRIBEPORT | grep -w ^scribe_overall:retries:`
+   [[ $match ]] && echo $match | awk '{print $2}' || echo -1
+   unset $match
+}
+
