@@ -36,7 +36,7 @@ function get_counter()
 #
 
 resp=$1
-case resp in
+case $resp in
   'status') get_scribe_status ;;
   'overall_good') get_counter "received good" ;;
   'overall_bad') get_counter "received bad" ;;
