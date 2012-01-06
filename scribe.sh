@@ -26,7 +26,7 @@ function get_scribe_status
 # Print the counter value or -1 if grep no matchs $1
 function get_counter()
 {
-   match=`scribe_ctrl counters $SCRIBEPORT | grep -w "^scribe_overall:$1:"`
+   match=`scribe_ctrl counters $SCRIBEPORT 2>/dev/null | grep -w "^scribe_overall:$1:"`
    [[ $match ]] && echo $match | awk '{print $2}' || echo -1
    unset $match
 }
