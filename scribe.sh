@@ -11,23 +11,41 @@
 #
 
 SCRIBEPORT=1463
+ERRORMSG='ZBX_NOT_SUPPORTED'
 
 #
 # Functions
 #
 
+function helpme()
+{
+  echo "Usage: $0 [item]"
+  echo '   Items:'
+  echo '       status: Retrives the scribe status.'
+  echo '       overall_good: Retrives the number of messages received since Scribe Server was started.'
+  echo '       overall_bad: Retrives the number of invalid messages received.'
+  echo '       overall_sent: Retrives the number of messages sent to another Scribe Server.'
+  echo '       overall_denied_for_queue_size: Retrives the number of requests denied due to a full message queue.'
+  echo '       overall_denied_for_rate: Retrives the number of requests denied due to rate limitting.'
+  echo '       overall_retries: Retrives the Number of times a Buffer Store had to retry logging a batch of messages.'
+  echo '       overall_retries: Retrives the number of times Scribe had to retry sending messages to a store (if must_succeed is enabled).'
+  echo '       overall_lost: Retrives the number of messages that were not logged. (Recommended configuration: Use BufferStores to avoid lost messages.)'
+  echo '       overall_blank_category: Retrives the number of messages received without a message category.'
+  exit 0
+}
+
 # Print 0 if status="ALIVE", else print 1.
 function get_scribe_status
 {
    status=`scribe_ctrl status`
-   [[ $status = "ALIVE" ]] && echo 0 || echo -1
+   [[ $status = "ALIVE" ]] && echo 0 || echo $ERRORMSG
 }
 
 # Print the counter value or -1 if grep no matchs $1
 function get_counter()
 {
    match=`scribe_ctrl counters $SCRIBEPORT 2>/dev/null | grep -w "^scribe_overall:$1:"`
-   [[ $match ]] && echo $match | awk '{print $2}' || echo -1
+   [[ $match ]] && echo $match | awk '{print $2}' || echo $ERRORMSG
    unset $match
 }
 
@@ -37,6 +55,7 @@ function get_counter()
 
 resp=$1
 case $resp in
+  '-h' | '--help') helpme ;;
   'status') get_scribe_status ;;
   'overall_good') get_counter "received good" ;;
   'overall_bad') get_counter "received bad" ;;
@@ -47,5 +66,5 @@ case $resp in
   'overall_requeue') get_counter "requeue" ;;
   'overall_lost') get_counter "lost" ;;
   'overall_blank_category') get_counter "blank category" ;;
-  *)  echo "ZBX_NOT_SUPPORTED"
+  *)  echo $ERRORMSG
 esac
