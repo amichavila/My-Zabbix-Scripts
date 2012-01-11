@@ -28,7 +28,7 @@ function helpme()
   echo '       overall_denied_for_queue_size: Retrives the number of requests denied due to a full message queue.'
   echo '       overall_denied_for_rate: Retrives the number of requests denied due to rate limitting.'
   echo '       overall_retries: Retrives the Number of times a Buffer Store had to retry logging a batch of messages.'
-  echo '       overall_retries: Retrives the number of times Scribe had to retry sending messages to a store (if must_succeed is enabled).'
+  echo '       overall_requeue: Retrives the number of times Scribe had to retry sending messages to a store (if must_succeed is enabled).'
   echo '       overall_lost: Retrives the number of messages that were not logged. (Recommended configuration: Use BufferStores to avoid lost messages.)'
   echo '       overall_blank_category: Retrives the number of messages received without a message category.'
   exit 0
@@ -46,7 +46,7 @@ function get_counter()
 {
    match=`scribe_ctrl counters $SCRIBEPORT 2>/dev/null | grep -w "^scribe_overall:$1:"`
    [[ $match ]] && echo $match | awk '{print $2}' || echo $ERRORMSG
-   unset $match
+   unset match
 }
 
 #
