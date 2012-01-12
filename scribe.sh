@@ -11,7 +11,8 @@
 #
 
 SCRIBEPORT=1463
-ERRORMSG='ZBX_NOT_SUPPORTED'
+STORAGEFOLDER='/var/log/scribe/store'
+ERRORMSG=-1
 
 #
 # Functions
@@ -31,6 +32,7 @@ function helpme()
   echo '       overall_requeue: Retrives the number of times Scribe had to retry sending messages to a store (if must_succeed is enabled).'
   echo '       overall_lost: Retrives the number of messages that were not logged. (Recommended configuration: Use BufferStores to avoid lost messages.)'
   echo '       overall_blank_category: Retrives the number of messages received without a message category.'
+  echo '       storage_size: Retrives the size of storage folder in bytes.'
   exit 0
 }
 
@@ -47,6 +49,14 @@ function get_counter()
    match=`scribe_ctrl counters $SCRIBEPORT 2>/dev/null | grep -w "^scribe_overall:$1:"`
    [[ $match ]] && echo $match | awk '{print $2}' || echo $ERRORMSG
    unset match
+}
+
+# Print the size of a folder in bytes, else print $ERRORMSG
+function get_size()
+{
+   size=`du -bs $1` 2>/dev/null
+   [[ $size ]] && echo $size | awk '{print $1}' || echo $ERRORMSG
+   unset size
 }
 
 #
@@ -66,5 +76,6 @@ case $resp in
   'overall_requeue') get_counter "requeue" ;;
   'overall_lost') get_counter "lost" ;;
   'overall_blank_category') get_counter "blank category" ;;
-  *)  echo $ERRORMSG
+  'storage_size') get_size "$STORAGEFOLDER" ;;
+  *)  echo 'ZBX_NOT_SUPPORTED'
 esac
