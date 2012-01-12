@@ -1,5 +1,0 @@
-FILES
-
-* LuchoXenAPI.py: This is my tiny version of XenAPI.
-* getvbds.py: This is an example using my XenAPI class. This script count all VBDs of a specific vm.
-
