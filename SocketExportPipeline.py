@@ -15,7 +15,8 @@ class SocketExportPipeline(object):
 		self.pickler.start_exporting()
 
 	def process_item (self, item):
-		self.pickler.export_item(item)
+		if item:
+			self.pickler.export_item(item)
 
 	def spider_closed():
 		self.file.close()
