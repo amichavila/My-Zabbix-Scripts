@@ -44,7 +44,7 @@ EOF
 # Print 0 if status="ALIVE", else print 1.
 function get_scribe_status
 {
-   status=`scribe_ctrl status 2>/dev/null`
+   status=`scribe_ctrl status $LISTENPORT 2>/dev/null`
    [[ $status = "ALIVE" ]] && echo 0 || echo $ERRORMSG 	
    unset status
 }
