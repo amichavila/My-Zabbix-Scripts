@@ -92,7 +92,7 @@ do
       '-s' | '--sending-port') SENDINGPORT="$2" ;;
       '-f' | '--store-folder') STORAGEFOLDER="$2" ;;
       '-e' | '--error-msg') ERRORMSG="$2" ;;
-      *) echo "Unknown parameter '$1' '$2'"
+      *) echo "Unknown parameter '$1'"
          helpme
    esac
    shift
