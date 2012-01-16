@@ -15,7 +15,7 @@ function helpme()
 {
 cat << EOF
 ++++++++++++
-Usage: $0 [option] --item [item]
+>> Usage: $0 [option] --item [item]
 
 Options:
    -h or --help: Show this help.
