@@ -25,18 +25,22 @@ Options:
    -e or --error-msg: Set the error message to show when an error its detected.
 Items:
    status: Retrives the scribe status. 0 = ALIVE else, show $ERRORMSG'
-   overall_good: Retrives the number of messages received since Scribe Server was started.'
-   overall_bad: Retrives the number of invalid messages received.'
-   overall_sent: Retrives the number of messages sent to another Scribe Server.'
-   overall_denied_for_queue_size: Retrives the number of requests denied due to a full message queue.'
-   overall_denied_for_rate: Retrives the number of requests denied due to rate limitting.'
-   overall_retries: Retrives the Number of times a Buffer Store had to retry logging a batch of messages.'
-   overall_requeue: Retrives the number of times Scribe had to retry sending messages to a store (if must_succeed is enabled).'
-   overall_lost: Retrives the number of messages that were not logged. (Recommended configuration: Use BufferStores to avoid lost messages.)'
-   overall_blank_category: Retrives the number of messages received without a message category.'
-   storage_size: Retrives the size of storage folder in bytes.'
+   good: Retrives the number of messages received since Scribe Server was started (scribe overall value).'
+   bad: Retrives the number of invalid messages received (scrive overall value).'
+   sent: Retrives the number of messages sent to another Scribe Server (scribe overall value).'
+   deniedfqs: Retrives the number of requests denied due to a full message queue (scribe overall value).'
+   deniedfr: Retrives the number of requests denied due to rate limitting (scribe overall value).'
+   retries: Retrives the Number of times a Buffer Store had to retry logging a batch of messages (scribe overall value).'
+   requeue: Retrives the number of times Scribe had to retry sending messages to a store (scribe overall value). VIEW NOTES'
+   lost: Retrives the number of messages that were not logged (scribe overall value). VIEW NOTES'
+   blankcategory: Retrives the number of messages received without a message category (scribe overall value).'
+   storage: Retrives the size of storage folder in bytes.'
    inconn: get the established incomming connections to LISTENPORT.'
    outconn: get the established outgoing connections to SENDINGPORT.'
+
+NOTES:
+  * Requeue only works if must_succeed is enabled.
+  * Lost recommended scribe configuration: Use BufferStores to avoid lost messages.
 EOF
   exit 0
 }
@@ -107,16 +111,16 @@ done
 case $item in
   '-h' | '--help') helpme ;;
   'status') get_scribe_status ;;
-  'overall_good') get_counter "received good" ;;
-  'overall_bad') get_counter "received bad" ;;
-  'overall_sent') get_counter "sent" ;;
-  'overall_denied_for_queue_size') get_counter "denied for queue size" ;;
-  'overall_denied_for_rate') get_counter "denied for rate" ;;
-  'overall_retries') get_counter "retries" ;;
-  'overall_requeue') get_counter "requeue" ;;
-  'overall_lost') get_counter "lost" ;;
-  'overall_blank_category') get_counter "blank category" ;;
-  'storage_size') get_size "$STORAGEFOLDER" ;;
+  'good') get_counter "received good" ;;
+  'bad') get_counter "received bad" ;;
+  'sent') get_counter "sent" ;;
+  'deniedfqs') get_counter "denied for queue size" ;;
+  'deniedfr') get_counter "denied for rate" ;;
+  'retries') get_counter "retries" ;;
+  'requeue') get_counter "requeue" ;;
+  'lost') get_counter "lost" ;;
+  'blankcategory') get_counter "blank category" ;;
+  'storage') get_size "$STORAGEFOLDER" ;;
   'inconn') get_incomming_conn ;;
   'outconn') get_outgoing_conn ;;
   *)  echo 'ZBX_NOT_SUPPORTED'
