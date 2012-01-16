@@ -52,7 +52,7 @@ function get_scribe_status
 function get_counter()
 {
    match=`scribe_ctrl counters $LISTENPORT 2>/dev/null | grep -w "^scribe_overall:$1:"`
-   [[ $match ]] && echo $match | awk '{print $2}' || echo $ERRORMSG
+   [[ $match ]] && echo $match | awk '{print $NF}' || echo $ERRORMSG
    unset match
 }
 
