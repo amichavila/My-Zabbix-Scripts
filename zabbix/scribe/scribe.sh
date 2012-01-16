@@ -25,7 +25,7 @@ Options:
    -f or --store-folder: Set the folder that scribe server use to store its data.
    -e or --error-msg: Set the error message to show when an error its detected.
 Items:
-   status: Retrives the scribe status. 0 = ALIVE else, show $ERRORMSG'
+   status: Retrives the scribe status. 0 = ALIVE else, show \$ERRORMSG'
    good: Retrives the number of messages received since Scribe Server was started (scribe overall value).'
    bad: Retrives the number of invalid messages received (scrive overall value).'
    sent: Retrives the number of messages sent to another Scribe Server (scribe overall value).'
