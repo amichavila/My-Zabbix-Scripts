@@ -10,9 +10,10 @@
 # Variables
 #
 
-SCRIBEPORT=1463
+LISTENPORT=1465
 STORAGEFOLDER='/var/log/scribe/store'
 ERRORMSG=-1
+TRANSMISSIONPORT=1463
 
 #
 # Functions
@@ -33,6 +34,8 @@ function helpme()
   echo '       overall_lost: Retrives the number of messages that were not logged. (Recommended configuration: Use BufferStores to avoid lost messages.)'
   echo '       overall_blank_category: Retrives the number of messages received without a message category.'
   echo '       storage_size: Retrives the size of storage folder in bytes.'
+  echo '       inconn: get the established incomming connections to LISTENPORT.'
+  echo '       outconn: get the established outgoing connections to TRANSMISSIONPORT.'
   exit 0
 }
 
@@ -46,7 +49,7 @@ function get_scribe_status
 # Print the counter value or -1 if grep no matchs $1
 function get_counter()
 {
-   match=`scribe_ctrl counters $SCRIBEPORT 2>/dev/null | grep -w "^scribe_overall:$1:"`
+   match=`scribe_ctrl counters $LISTENPORT 2>/dev/null | grep -w "^scribe_overall:$1:"`
    [[ $match ]] && echo $match | awk '{print $2}' || echo $ERRORMSG
    unset match
 }
@@ -57,6 +60,20 @@ function get_size()
    size=`du -bs $1` 2>/dev/null
    [[ $size ]] && echo $size | awk '{print $1}' || echo $ERRORMSG
    unset size
+}
+
+function get_incomming_conn()
+{
+   incomming=`netstat -t | grep 'ESTABLISHED' | awk '{print $4}' | grep :$LISTENPORT | wc -l` 2>/dev/null
+   [[ $incomming ]] && echo $incomming || echo $ERRORMSG
+   unset incomming
+}
+
+function get_outgoing_conn()
+{
+   outgoing=`netstat -t | grep 'ESTABLISHED' | awk '{print $5}' | grep :$TRANSMISSIONPORT | wc -l` 2>/dev/null
+   [[ $outgoing ]] && echo $outgoing || echo $ERRORMSG
+   unset outgoing
 }
 
 #
@@ -77,5 +94,7 @@ case $resp in
   'overall_lost') get_counter "lost" ;;
   'overall_blank_category') get_counter "blank category" ;;
   'storage_size') get_size "$STORAGEFOLDER" ;;
+  'inconn') get_incomming_conn ;;
+  'outconn') get_outgoing_conn ;;
   *)  echo 'ZBX_NOT_SUPPORTED'
 esac
