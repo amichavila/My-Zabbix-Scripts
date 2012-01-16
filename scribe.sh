@@ -14,6 +14,7 @@
 function helpme()
 {
 cat << EOF
+++++++++++++
 Usage: $0 [option] --item [item]
 
 Options:
@@ -37,10 +38,10 @@ Items:
    storage: Retrives the size of storage folder in bytes.'
    inconn: get the established incomming connections to LISTENPORT.'
    outconn: get the established outgoing connections to SENDINGPORT.'
-
 NOTES:
   * Requeue only works if must_succeed is enabled.
   * Lost recommended scribe configuration: Use BufferStores to avoid lost messages.
+++++++++++++++
 EOF
   exit 0
 }
