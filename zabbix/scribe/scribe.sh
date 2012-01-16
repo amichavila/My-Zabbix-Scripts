@@ -46,11 +46,11 @@ EOF
   exit 0
 }
 
-# Print 0 if status="ALIVE", else print 1.
+# Print 1 if status="ALIVE", else print $ERRORMSG.
 function get_scribe_status
 {
    status=`scribe_ctrl status $LISTENPORT 2>/dev/null`
-   [[ $status = "ALIVE" ]] && echo 0 || echo $ERRORMSG 	
+   [[ $status = "ALIVE" ]] && echo 1 || echo $ERRORMSG 	
    unset status
 }
 
@@ -106,7 +106,7 @@ done
 
 [[ ! $LISTENPORT ]] && LISTENPORT=1465
 [[ ! $STORAGEFOLDER ]] && STORAGEFOLDER='/var/log/scribe/store'
-[[ ! $ERRORMSG ]] && ERRORMSG=-1
+[[ ! $ERRORMSG ]] && ERRORMSG=0
 [[ ! $SENDINGPORT ]] && SENDINGPORT=1463
 
 case $item in
