@@ -55,8 +55,6 @@ if dpkg -l | grep zabbix-agent ;
        read Respuesta
      case $Respuesta in
        'y' | 'Y') apt-get remove --purge zabbix-agent -y >> ZabbixAgent1.8.2.log
-		  echo "Deleting /etc/zabbix..."
-		  rm /etc/zabbix -rf
                ;;
        'n' | 'N') echo "Exiting."
                   exit 1
