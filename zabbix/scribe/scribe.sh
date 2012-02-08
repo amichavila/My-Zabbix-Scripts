@@ -15,15 +15,8 @@ function helpme()
 {
 cat << EOF
 ++++++++++++
->> Usage: `basename $0` [option] --item [item]
+>> Usage: `basename $0` [item,listen_port,[<sending port>,<storage folder>,<error message>,<debug>]]
 
-Options:
-   -h or --help: Show this help.
-   -i or --item: Set the item I will get from scribe.
-   -l or --listen-port: Set the port that scribe server listen from incomming connections.
-   -s or --sending-port: Set the port that scribe server send data to another scribe server.
-   -f or --store-folder: Set the folder that scribe server use to store its data.
-   -e or --error-msg: Set the error message to show when an error its detected.
 Items:
    status: Retrives the scribe status. 0 = ALIVE else, show \$ERRORMSG'
    good: Retrives the number of messages received since Scribe Server was started (scribe overall value).'
@@ -38,7 +31,10 @@ Items:
    storage: Retrives the size of storage folder in bytes.'
    inconn: get the established incomming connections to LISTENPORT.'
    outconn: get the established outgoing connections to SENDINGPORT.'
+
 NOTES:
+  * debug: To enable debug set this param with 'true'
+  * If you do not need a specific parameter, set it to "null". Ex.: (from zabbix) request: scribe[good,1465,null,null,null,true]
   * Requeue only works if must_succeed is enabled.
   * Lost recommended scribe configuration: Use BufferStores to avoid lost messages.
 ++++++++++++++
@@ -93,6 +89,7 @@ Listen Port = $LISTENPORT
 Sending Port = $SENDINGPORT
 Store Folder = $STORAGEFOLDER
 Error Message = $ERRORMSG
+Debug = $DEBUG
 
 EOF
 }
@@ -101,34 +98,27 @@ EOF
 # Main code
 #
 
-# Used for debug
-DEBUG=false
+DEBUG=
+LISTENPORT=1465
+STORAGEFOLDER='/var/log/scribe/store'
+ERRORMSG=0
+SENDINGPORT=1463
 
+# Check if I received params
 [[ $# -eq 0 ]] && echo "Please, use $0 -h or --help." && exit 1
 
-## Parse and set variable values
-while [ $# -ge 1 ] ;
-do
-   case $1 in
-      '-h' | '--help') helpme ;;
-      '-i' | '--item') item="$2" ;;
-      '-l' | '--listen-port') LISTENPORT="$2" ;;
-      '-s' | '--sending-port') SENDINGPORT="$2" ;;
-      '-f' | '--store-folder') STORAGEFOLDER="$2" ;;
-      '-e' | '--error-msg') ERRORMSG="$2" ;;
-      '-d' | '--debug') DEBUG=true ;;
-      *) echo "Unknown parameter '$1'"
-         helpme
-   esac
-   shift
-   shift
-done
+item=$1
+LISTENPORT=$2
+SENDINGPORT=$3
+STORAGEFOLDER=$4
+ERRORMSG=$5
+DEBUG=$6
 
-[[ ! $LISTENPORT ]] && LISTENPORT=1465
-[[ ! $STORAGEFOLDER ]] && STORAGEFOLDER='/var/log/scribe/store'
-[[ ! $ERRORMSG ]] && ERRORMSG=0
-[[ ! $SENDINGPORT ]] && SENDINGPORT=1463
-[[ $DEBUG = true ]] && debuging
+[[ $LISTENPORT = "null" ]] && LISTENPORT=1465
+[[ $SENDINGPORT = "null" ]] && SENDINGPORT=1463
+[[ $STORAGEFOLDER = "null" ]] && STORAGEFOLDER="/var/log/scribe/store"
+[[ $ERRORMSG = "null" ]] && ERRORMSG=0
+[[ $DEBUG = "true" ]] && debuging
 
 case $item in
   '-h' | '--help') helpme ;;
@@ -145,6 +135,6 @@ case $item in
   'storage') get_size "$STORAGEFOLDER" ;;
   'inconn') get_incomming_conn ;;
   'outconn') get_outgoing_conn ;;
-  *)  echo 'ZBX_NOT_SUPPORTED'
+  *)  echo 'FUCK YOU' #echo 'ZBX_NOTSUPPORTED'
 esac
 
