@@ -147,3 +147,4 @@ case $item in
   'outconn') get_outgoing_conn ;;
   *)  echo 'ZBX_NOT_SUPPORTED'
 esac
+
