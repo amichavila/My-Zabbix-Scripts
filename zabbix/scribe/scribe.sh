@@ -15,7 +15,7 @@ function helpme()
 {
 cat << EOF
 ++++++++++++
->> Usage: $0 [option] --item [item]
+>> Usage: `basename $0` [option] --item [item]
 
 Options:
    -h or --help: Show this help.
@@ -83,9 +83,28 @@ function get_outgoing_conn()
    unset outgoing
 }
 
+function debuging()
+{
+cat << EOF
+
+[ DEBUG ]
+Item = $item
+Listen Port = $LISTENPORT
+Sending Port = $SENDINGPORT
+Store Folder = $STORAGEFOLDER
+Error Message = $ERRORMSG
+
+EOF
+}
+
 #
 # Main code
 #
+
+# Used for debug
+DEBUG=false
+
+[[ $# -eq 0 ]] && echo "Please, use $0 -h or --help." && exit 1
 
 ## Parse and set variable values
 while [ $# -ge 1 ] ;
@@ -97,6 +116,7 @@ do
       '-s' | '--sending-port') SENDINGPORT="$2" ;;
       '-f' | '--store-folder') STORAGEFOLDER="$2" ;;
       '-e' | '--error-msg') ERRORMSG="$2" ;;
+      '-d' | '--debug') DEBUG=true ;;
       *) echo "Unknown parameter '$1'"
          helpme
    esac
@@ -108,6 +128,7 @@ done
 [[ ! $STORAGEFOLDER ]] && STORAGEFOLDER='/var/log/scribe/store'
 [[ ! $ERRORMSG ]] && ERRORMSG=0
 [[ ! $SENDINGPORT ]] && SENDINGPORT=1463
+[[ $DEBUG = true ]] && debuging
 
 case $item in
   '-h' | '--help') helpme ;;
