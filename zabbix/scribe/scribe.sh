@@ -45,38 +45,33 @@ EOF
 # Print 1 if status="ALIVE", else print $ERRORMSG.
 function get_scribe_status
 {
-   status=`scribe_ctrl status $LISTENPORT 2>/dev/null`
+   local status=`scribe_ctrl status $LISTENPORT 2>/dev/null`
    [[ $status = "ALIVE" ]] && echo 1 || echo $ERRORMSG 	
-   unset status
 }
 
 function get_counter()
 {
-   match=`scribe_ctrl counters $LISTENPORT 2>/dev/null | grep -w "^scribe_overall:$1:"`
+   local match=`scribe_ctrl counters $LISTENPORT 2>/dev/null | grep -w "^scribe_overall:$1:"`
    [[ $match ]] && echo $match | awk '{print $NF}' || echo $ERRORMSG
-   unset match
 }
 
 # Print the size of a folder in bytes, else print $ERRORMSG
 function get_size()
 {
-   size=`du -bs $1 2>/dev/null`
+   local size=`du -bs $1 2>/dev/null`
    [[ $size ]] && echo $size | awk '{print $1}' || echo $ERRORMSG
-   unset size
 }
 
 function get_incomming_conn()
 {
-   incomming=`netstat -t | grep 'ESTABLISHED' | awk '{print $4}' | grep :$LISTENPORT | wc -l 2>/dev/null`
+   local incomming=`netstat -t | grep 'ESTABLISHED' | awk '{print $4}' | grep :$LISTENPORT | wc -l 2>/dev/null`
    [[ $incomming ]] && echo $incomming || echo $ERRORMSG
-   unset incomming
 }
 
 function get_outgoing_conn()
 {
-   outgoing=`netstat -t | grep 'ESTABLISHED' | awk '{print $5}' | grep :$SENDINGPORT | wc -l 2>/dev/null`
+   local outgoing=`netstat -t | grep 'ESTABLISHED' | awk '{print $5}' | grep :$SENDINGPORT | wc -l 2>/dev/null`
    [[ $outgoing ]] && echo $outgoing || echo $ERRORMSG
-   unset outgoing
 }
 
 function debuging()
@@ -137,4 +132,5 @@ case $item in
   'outconn') get_outgoing_conn ;;
   *)  echo 'FUCK YOU' #echo 'ZBX_NOTSUPPORTED'
 esac
+
 
