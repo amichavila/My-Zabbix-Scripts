@@ -64,13 +64,13 @@ function get_size()
 
 function get_incomming_conn()
 {
-   local incomming=`netstat -t | grep 'ESTABLISHED' | awk '{print $4}' | grep :$LISTENPORT | wc -l 2>/dev/null`
+   local incomming=`netstat -nt | grep 'ESTABLISHED' | awk '{print $4}' | grep :$LISTENPORT | wc -l 2>/dev/null`
    [[ $incomming ]] && echo $incomming || echo $ERRORMSG
 }
 
 function get_outgoing_conn()
 {
-   local outgoing=`netstat -t | grep 'ESTABLISHED' | awk '{print $5}' | grep :$SENDINGPORT | wc -l 2>/dev/null`
+   local outgoing=`netstat -nt | grep 'ESTABLISHED' | awk '{print $5}' | grep :$SENDINGPORT | wc -l 2>/dev/null`
    [[ $outgoing ]] && echo $outgoing || echo $ERRORMSG
 }
 
